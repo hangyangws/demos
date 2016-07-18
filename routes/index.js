@@ -3,27 +3,20 @@
  * https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.0vF4aj&treeId=60&articleId=104790&docType=1#s5
  */
 
-var crypto = require('crypto'),
+var crypto = require('crypto'), // 加密模块
     querystring = require('querystring'),
-    // 支付配置
-    payConf = {
+    payConf = { // 支付配置
+        ALIPAY_HOST: 'mapi.alipay.com', // 接口域名地址
+        ALIPAY_PATH: 'gateway.do?', // 接口路径
+        input_charset: 'utf-8', // 字符集、加密方式
+        sign_type: 'MD5',
+        notify_url: 'http://127.0.0.1:3000/alipay/notify', // 支付宝服务器通知的页面,http://格式的完整路径,不允许加?id:123这类自定义参数(外网访问)
+        return_url: 'http://127.0.0.1:3000/alipay/return', // 支付宝处理完请求后,当前页面自动跳转到商户网站里指定页面的http路径。
         // 合作身份者ID,以2088开头由16位纯数字组成的字符串
         partner: '2088121387687137',
         // 交易安全检验码,由数字和字母组成的32位字符串
         key: 'gsgq7khai26i24rf6120ormr11kslulz',
-        // 签约支付宝账号或卖家收款支付宝帐户
-        seller_email: 'service@yisjt.com',
-        // 支付宝服务器通知的页面 要用 http://格式的完整路径,不允许加?id:123这类自定义参数(外网访问)
-        notify_url: 'http://127.0.0.1:3000/paynotify',
-        // 支付宝处理完请求后,当前页面自动跳转到商户网站里指定页面的http路径。
-        return_url: 'http://127.0.0.1:3000/payreturn',
-        // 支付宝通知验证地址
-        ALIPAY_HOST: 'mapi.alipay.com',
-        HTTPS_VERIFY_PATH: '/gateway.do?service=notify_verify&',
-        ALIPAY_PATH: 'gateway.do?',
-        // 字符集和签名加密方式
-        input_charset: 'utf-8',
-        sign_type: 'MD5'
+        HTTPS_VERIFY_PATH: '/gateway.do?service=notify_verify&'
     },
     // 验证支付宝返回的参数
     alipayVerity = function(params, callback) {
@@ -50,7 +43,6 @@ var crypto = require('crypto'),
             }
             arr.push(key + '=' + params[key]);
         }
-
         // 把拼接后的字符串再与安全校验码直接连接起来,然后用utf-8的编码格式MD5加密
         return crypto.createHash('MD5').update(arr.sort().join('&') + payConf.key, payConf.input_charset).digest('hex');
     },
@@ -128,30 +120,14 @@ module.exports = {
             }
         });
     },
-    // 服务器异步通知
+    // 支付宝异步通知
     paynotify: function(req, res) {
-        // 参考支付宝开放平台文档中心 - #服务器异步通知参数说明# （这里只是示例）
-        // var params = req.query, // 支付宝异步通知返回GET参数对象
-        //     trade_no = params.trade_no, // 支付宝交易号
-        //     order_no = params.out_trade_no, // 获取订单号
-        //     total_fee = params.total_fee, // 获取总金额
-        //     subject = params.subject, // 商品名称、订单名称
-        //     body = params.body || '', // 商品描述、订单备注、描述
-        //     buyer_email = params.buyer_email, // 买家支付宝账号
-        //     trade_status = params.trade_status; // 交易状态
-        alipayVerity(params, function(status) {
-            if (status) {
-                // 请在这里加上商户的业务逻辑程序代码
-                // 判断该笔订单是否在商户网站中已经做过处理
-                // 如果没有做过处理,根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细,并执行商户的业务程序
-                // 如果有做过处理,不执行商户的业务程序
-                if (trade_status == 'TRADE_FINISHED') {
-                    // 该种交易状态只在两种情况下出现
-                    // 1、开通了普通即时到账,买家付款成功后。
-                    // 2、开通了高级即时到账,从该笔交易成功时间算起,过了签约时的可退款时限（如：三个月以内可退款、一年以内可退款等）后。
-                } else if (trade_status == 'TRADE_SUCCESS') {
-                    // 该种交易状态只在一种情况下出现——开通了高级即时到账,买家付款成功后。
-                }
+        // 参考支付宝开放平台文档中心
+        var params = req.query; // 支付宝异步通知返回GET参数对象
+        console.log('支付宝异步通知参数：', params);
+        alipayVerity(params, status => {
+            if (status && (trade_status == 'TRADE_FINISHED' || trade_status == 'TRADE_SUCCESS')) {
+                // 判断该笔订单是否在商户网站中已经做过处理，如果没有做过处理,根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细,并执行商户的业务程序，如果有做过处理,不执行商户的业务程序
                 res.end('success');
             } else {
                 res.end('fail');
