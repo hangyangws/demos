@@ -9,7 +9,7 @@ var app = require('../app'),
     http = require('http'),
     cluster = require('cluster'),
     numCpus = require('os').cpus().length,
-    port = (function(_v) {
+    port = (_v => {
         var port = parseInt(_v, 10);
         if (isNaN(port)) {
             return _v;
