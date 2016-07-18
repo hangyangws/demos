@@ -2,70 +2,68 @@
  * Created by hangyangws(hangyangws@foxmail.com) in 2016-07-18.
  */
 
-// 支付宝文档接口：https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.0vF4aj&treeId=60&articleId=104790&docType=1#s5
+// 支付宝文档地址：https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.0vF4aj&treeId=60&articleId=104790&docType=1#s5
 var crypto = require('crypto'), // 加密模块
     querystring = require('querystring'),
-    payConf = { // 支付配置
-        ALIPAY_HOST: 'mapi.alipay.com', // 接口域名地址
-        ALIPAY_PATH: 'gateway.do', // 接口路径
-        input_charset: 'utf-8', // 字符集、加密方式
-        sign_type: 'MD5',
-        notify_url: 'http://127.0.0.1:3000/alipay/notify', // 支付宝服务器通知的页面,http://格式的完整路径,不允许加?id:123这类自定义参数(外网访问)
-        return_url: 'http://127.0.0.1:3000/alipay/return', // 支付宝处理完请求后,当前页面自动跳转到商户网站里指定页面的http路径。
-        // 合作身份者ID,以2088开头由16位纯数字组成的字符串
-        partner: '2088121387687137',
-        // 交易安全检验码,由数字和字母组成的32位字符串
-        key: 'gsgq7khai26i24rf6120ormr11kslulz',
-        HTTPS_VERIFY_PATH: '/gateway.do?service=notify_verify&'
-    },
-    // 验证支付宝返回的参数
-    alipayVerity = function(params, callback) {
-        var mysign = getMySign(params);
-        // mysign与sign不等,与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
-        if (params.notify_id && (params.sign === mysign)) {
-            var veryfy_path = payConf.HTTPS_VERIFY_PATH + 'partner=' + payConf.partner + '&notify_id=' + params.notify_id;
-            requestUrl(payConf.ALIPAY_HOST, veryfy_path, function(responseTxt) {
-                callback(responseTxt ? true : false);
-            });
-        } else {
-            callback(false);
-        }
-    },
-    // 根据对象参数,Key以支付宝规范生成验证码sign
-    getMySign = function(params) {
-        var key,
-            arr = [];
-        for (key in params) {
+    https = require('https'),
+    payConf = require('../../conf/alipay'),
+    getMySign = function(params) { // 根据对象参数、Key，依据支付宝规范生成验证码sign
+        var arr = [];
+        for (let key in params) {
             // 筛选,获取所有请求参数,不包括字节类型参数,如文件、字节流,剔除sign与sign_type参数。
             // 按照'参数=参数值'的模式用'&'字符拼接成字符串。
-            if (!params[key] || key === 'sign' || key === 'sign_type') {
-                continue;
-            }
+            if (!params[key] || key === 'sign' || key === 'sign_type') { continue; }
             arr.push(key + '=' + params[key]);
         }
         // 把拼接后的字符串再与安全校验码直接连接起来,然后用utf-8的编码格式MD5加密
         return crypto.createHash('MD5').update(arr.sort().join('&') + payConf.key, payConf.input_charset).digest('hex');
     },
-    // 自定义请求方法
-    requestUrl = function(host, path, callback) {
-        var https = require('https'),
-            options = {
-                host: host,
-                port: 443,
-                path: path,
-                method: 'GET'
-            };
-        var req = https.request(options, res => {
-            console.log('statusCode: ', res.statusCode, 'headers:', res.headers);
-            // 这里需要判断statusCode的状态
-            res.on('data', data => callback(data));
-        });
+    alipayVerity = function(params, callback) { // 验证支付宝返回的参数
+        var mysign = getMySign(params);
+        // mysign与sign不等,与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
+        console.log('支付宝返回参数：', params);
+        if (params.notify_id && (params.sign === mysign)) {
+            let veryfy_path = [
+                payConf.HTTPS_VERIFY_PATH,
+                'partner=',
+                payConf.partner,
+                '&notify_id=',
+                params.notify_id
+            ].join('');
+            httpsReq(veryfy_path, respons => {
+                callback(respons ? true : false);
+            });
+        } else {
+            console.log('支付宝返回参数验证错误');
+            callback(false);
+        }
+    },
+    httpsReq = function(path, callback) { // 自定义请求方法https
+        var options = {
+            host: payConf.ALIPAY_HOST,
+            port: 443,
+            path: path,
+            method: 'GET'
+        };
+        try {
+            var req = https.request(options, res => {
+                console.log('https请求，statusCode: ', res.statusCode, 'headers:', res.headers);
+                // 这里需要判断statusCode的状态
+                res.on('data', data => {
+                    console.log('https请求完成：', data);
+                    callback(data);
+                });
+            });
+        } catch (e) {
+            console.log('支付https请求错误：', e);
+        };
         req.end();
         req.on('error', e => {
-            console.error('请求出错', e);
+            console.error('请求出错：', e);
             callback(false);
         });
     };
+
 module.exports = {
     // 开始支付
     alipayto: function(req, res) {
