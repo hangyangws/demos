@@ -7,7 +7,7 @@ var crypto = require('crypto'), // 加密模块
     querystring = require('querystring'),
     payConf = { // 支付配置
         ALIPAY_HOST: 'mapi.alipay.com', // 接口域名地址
-        ALIPAY_PATH: 'gateway.do?', // 接口路径
+        ALIPAY_PATH: 'gateway.do', // 接口路径
         input_charset: 'utf-8', // 字符集、加密方式
         sign_type: 'MD5',
         notify_url: 'http://127.0.0.1:3000/alipay/notify', // 支付宝服务器通知的页面,http://格式的完整路径,不允许加?id:123这类自定义参数(外网访问)
@@ -70,7 +70,6 @@ var crypto = require('crypto'), // 加密模块
 module.exports = {
     // 开始支付
     alipayto: function(req, res) {
-        // https://mapi.alipay.com/gateway.do? //-支付宝网关-固定-No
         // 基本参数
         // service=create_direct_pay_by_user& //-接口名称-String-No
         // partner=***& //-合作者身份ID,以2088开头的16位纯数字组成-String(16)-No
@@ -91,6 +90,20 @@ module.exports = {
 
         // 把请求参数打包成对象
         var sParaTemp = { // 基本参数
+            service: ,
+            partner: ,
+            _input_charset: ,
+            notify_url: ,
+            return_url: ,
+            partner: ,
+            partner: ,
+            partner: ,
+            partner: ,
+            partner: ,
+            partner: ,
+            partner: ,
+            partner: ,
+            partner:
         };
         sParaTemp.buyer_email = 'hangyangws@qq.com'; // 业务参数
         // 这个时候 sParaTemp 为一个包含所有参数的对象（无sign参数）
@@ -100,7 +113,13 @@ module.exports = {
         _sParaTemp.sign_type = payConf.sign_type;
 
         // 向支付宝网关发出请求
-        res.redirect('https://' + payConf.ALIPAY_HOST + '/' + payConf.ALIPAY_PATH + querystring.stringify(_sParaTemp));
+        res.redirect(['https://',
+            payConf.ALIPAY_HOST,
+            '/',
+            payConf.ALIPAY_PATH,
+            '?',
+            querystring.stringify(_sParaTemp)
+        ]);
     },
     // 支付宝对商户的请求数据处理完成后,会将处理的结果数据通过系统程序控制客户端页面自动跳转的方式通知给商户网站。这些处理结果数据就是页面跳转同步通知参数。
     payreturn: function(req, res) {

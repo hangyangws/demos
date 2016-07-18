@@ -1,39 +1,61 @@
 /**
- * Module dependencies.
+ * Created by hangyangws(hangyangws@foxmail.com) in 2016-07-18.
  */
 
+// 模块引入
 var express = require('express'),
-    routes = require('./routes');
+    path = require('path'),
+    httpLogger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    app = express(),
+    velocity = require('velocityjs'),
+    fs = require('fs'),
+    conf = require('./conf/conf');
 
-var app = module.exports = express.createServer();
-
-// Configuration
-
-app.configure(function() {
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'html');
-    app.register('.html', require('ejs'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
-    app.use(express.static(__dirname + '/public'));
+// 模板引擎设置（velocity）
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
+app.engine('html', function(path, options, fn) {
+    var template = fs.readFileSync(path).toString(),
+        macros = {
+            parse: function(file) {
+                var template = fs.readFileSync(process.cwd() + '/views/' + file).toString();
+                return this.eval(template);
+            }
+        };
+    try {
+        fn(null, velocity.render(template, options, macros));
+    } catch (err) {
+        fn(err)
+    }
 });
 
-app.configure('development', function() {
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+app.use(httpLogger('dev')); // 打印http请求日志
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+// 配置静态文件路径
+app.use(express.static(path.join(__dirname, conf.staticSrc)));
+
+// 路由设置
+require('./routes/index')(app);
+
+// 404
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
-app.configure('production', function() {
-    app.use(express.errorHandler());
+// 500
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('common/error', {
+        message: err.message,
+        error: {}
+    });
 });
 
-// Routes
-
-app.get('/', routes.index);
-app.post('/alipayto', routes.alipayto);
-app.get('/paynotify', routes.paynotify);
-app.get('/payreturn', routes.payreturn);
-
-app.listen(3009, function() {
-    console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-});
+module.exports = app;
