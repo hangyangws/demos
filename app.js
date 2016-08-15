@@ -2,6 +2,8 @@
  * Created by hangyangws(hangyangws@foxmail.com) in 2016-07-18.
  */
 
+'use strict';
+
 // 模块引入
 var express = require('express'),
     path = require('path'),
@@ -43,18 +45,17 @@ app.use(express.static(path.join(__dirname, conf.staticSrc)));
 require('./routes/index')(app);
 
 // 404
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 // 500
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('common/error', {
-        message: err.message,
-        error: {}
+        message: err.message
     });
 });
 
