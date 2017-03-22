@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue demo - hangyangws</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+
+<body>
+    <main id="Main">
+        <ul>
+            <li>
+                <h2>hangyangws-Vue基础</h2>
+                <i>请查看html、js代码共同学习</i>
+            </li>
+            <li>
+                <h2>数据模型与展示</h2>
+                <i>“双大括号”解释为纯文本，“v-html”解释为html；<br />
+                type="number" 时 HTML 中输入的值也总是会返回字符串类型；<br />
+                “v-once”内容不会更新。</i>
+                <p>输入title：
+                    <input type="text" v-model.lazy="title" />
+                </p>
+                <p>
+                    v-html：<span v-html="title"></span>。
+                    <span class="blank"></span> 计算属性：
+                    <span v-once>{{spaceTitle}}</span>
+                </p>
+                <br />
+                <p>
+                    请输入数字：
+                    <input type="text" type="number" v-model="numberStr" /> {{typeof numberStr}} ==> {{numberStr}}
+                </p>
+                <p>
+                    请输入数字：
+                    <input type="text" type="number" v-model.number.trim="number" /> {{typeof number}} ==> {{number}}
+                </p>
+            </li>
+            <li>
+                <h2>v-bind指令</h2>
+                <i>v-bind的缩写：`:`。</i>
+                <br />
+                <i :data-show="show">如果属性条件被求值为false的话该属性会被移除而不是为空；<br />
+                对于数据绑定，Vue.js供了完全的JavaScript表达式支持。有个限制：只能包含单个表达式。<br />
+                </i>
+                <p v-bind:title="message" v-bind:style="styleObj">v-bind：鼠标悬浮过来试试</p>
+            </li>
+            <li>
+                <h2>v-if指令</h2>
+                <i>v-if可以嵌套。v-else-if、v-else；<br />
+                v-else 元素必须紧跟在 v-if 元素或者 v-else-if的后面，否则它不能被识别;<br />
+                &lt;template&gt;元素当做包装元素，并在上面使用 v-if，最终的渲染结果不会包含它；<br />
+                &lt;template&gt;的input复用了（为了渲染速度），如果不想复用某个元素那么久添加key：必须带有唯一的值。
+                </i>
+                <p v-if="show">show为true就展示</p>
+                <br />
+                <template v-if="show">
+                    <input type="text" placeholder="if-input-true" key="if-input" />
+                </template>
+                <template v-else>
+                    <input type="text" placeholder="else-input-false" key="else-input" />
+                </template>
+            </li>
+            <li>
+                <h2>v-on指令</h2>
+                <i> @（v-on: 的快捷方式）;<br />
+                事件绑定可以传入参数：$event 在on函数中也可以直接使用event，如果没有参数默认第一个参数也是event。
+                </i>
+                <br />
+                <button v-on:click="toggleShow($event)">v-on指令，改变元素显示</button>
+            </li>
+            <li>
+                <h2>v-show指令</h2>
+                <i>v-show:v-show 是简单的切换元素的 CSS 属性 display;<br />
+                PS： v-show 不同v-if,v-show不支持 &lt;template&gt; 语法。</i>
+                <p v-show="show">v-show</p>
+            </li>
+            <li>
+                <h2>v-for指令</h2>
+                <i>在 v-for 块中，我们拥有对父作用域<b>属性</b>的完全访问权限;<br />
+                v-for 还支持一个可选的第二个参数为当前项的索引;<br />
+                也可以用 of 替代 in 作为分隔符，因为它是最接近 JavaScript 迭代器的语法;<br />
+                v-for 第一个参数是 val，第二个是key（数组为index）,第三个为index(只有object才有)。</i>
+                <p>v-for数组：</p>
+                <ul>
+                    <li v-for="(list, listIndex) in lists">{{listIndex}} —— {{list.name}}</li>
+                </ul>
+                <p>v-for对象：</p>
+                <ul>
+                    <li v-for="(val, key) of styleObj">{{key}}=>{{val}}</li>
+                </ul>
+                <p>v-for嵌套：</p>
+                <ul>
+                    <li v-for="btn in btns">
+                        <ul>
+                            <li v-for="(val, key, index) in btn">
+                                {{index}} —— {{key}}：{{val}}
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>v-for迭代整数：</p>
+                <template v-for="num in 10">{{num}} </template>
+            </li>
+            <li>
+                <h2>组建</h2>
+                <i>自定义组件里，你可以像任何普通元素一样用 v-for；<br />
+                组建不能自动传递数据到组件内部，因为组件有自己独立的作用域；<br />
+                可以使用`props`属性，传递值；<br />
+                组建类内容必须是单独的一个标签，否则只能识别第一个标签；<br />
+                组建的标签名可以直接使用组建名，也可以使用组建代表的标签名（必须用is="组建名"）；<br />
+                组建的v-on不能使用@；<br />
+                组建内部触发点击，要绑定 $emit('事件名') ，而在应用的元素上声明事件名；<br />
+                组建上可以和组建实例共用class，注意只是单纯的合并，不会过滤重复的class；<br />
+                组建实例`props`读取的是组建的属性；<br />
+                如果组件未经 slot 元素传递内容，你甚至可以在组件名后使用 / 使其自闭合；<br />
+                要确保在初始化根实例 之前 注册了组件。
+                </i>
+                <p>
+                    <button is="btns" class="border" v-for="(btn, index) in btns" v-bind:mybtn="btn" v-on:remove="btns.splice(index, 1)"></button>
+                </p>
+                <p>组建和Vue示例类似，也可以有computed、data,如下：</p>
+                <my-component v-bind:number="1"></my-component>
+            </li>
+            <li>
+                <h2>计算属性</h2>
+                <p>{{firstname + ' + ' + lastname}} = {{fullname}}</p>
+                输入新的姓名，空格分开：
+                <input v-on:keyup.enter="setName($event.target.value)" type="text" />
+            </li>
+            <li>
+                <h2>Class</h2>
+                <i>直接使用对象：key表示类名，value表示是否要此类名的；<br />
+                v-bind的class可以和一般的class属性共存，但是不会过滤重复类名；<br />
+                class可以使用对象（对象可以是数组对象）、数组（可以是数组数组）。
+                </i>
+                <br />
+                <p class="border" v-bind:class="{red: color.red, green: color.green}">Class，纯对象</p>
+                <p class="border" v-bind:class="[myClassObj, myClassObj2]">Class，数组对象</p>
+                <p class="border" v-bind:class="[colorList, colorList2]">Class数组数组</p>
+                <p class="border" v-bind:class="colorList">Class纯数组</p>
+                <p class="border" v-bind:class="[colorList[0], colorList[1]]">Class数组表示</p>
+            </li>
+            <li>
+                <h2>事件修饰符</h2>
+                <i>同理，输入控件有：“按键修饰符”</i>
+                <br />
+                <p class="border green" v-on:click.self="log('父元素')">
+                    父元素
+                    <span class="border" v-on:click.once="log('子元素once')">子元素once</span>
+                    <span class="border" v-on:click.capture="log('子元素capture')">子元素capture</span>
+                    <span class="border" v-on:click.stop="log('子元素stop')">子元素stop</span>
+                </p>
+            </li>
+            <li>
+                <h2>v-model</h2>
+                <i>绑定的 value 通常是静态字符串（对于勾选框"checkbox"是逻辑值）。</i>
+                <p>
+                    <label>
+                        firstname OR lastname：
+                        <input type="checkbox" v-model="checkbox" v-bind:true-value="firstname" v-bind:false-value="lastname" />
+                    </label>
+                    <br /> checkbox：{{checkbox}}
+                </p>
+                <p>
+                    <label>
+                        firstname:
+                        <input type="radio" name="radio" v-model="radio" v-bind:value="firstname" />
+                    </label>
+                    <br />
+                    <label>
+                        lastname
+                        <input type="radio" name="radio" v-model="radio" v-bind:value="lastname" />
+                    </label>
+                    <br /> radio：{{radio}}
+                </p>
+            </li>
+            <li>
+                <h2>Slot</h2>
+                <i>除非子组件模板包含至少一个&lt;slot&gt;插口，否则父组件的内容将会被丢弃；<br />
+                当子组件模板只有一个没有属性的&lt;slot&gt;时，父组件整个内容片段替换掉&lt;slot&gt;标签本身；<br />
+                &lt;slot&gt;标签中的内容为备用内容。只有在宿主元素为空，且没有要插入的内容时才显示备用内容；
+                &lt;slot&gt;元素可以用一个特殊的属性name来配置如何分发内容；<br />
+                仍然可以有一个匿名slot（默认slot，作为找不到匹配的内容片段的备用插槽）。如果没有默认slot ，这些找不到匹配的内容片段将被抛弃。</i>
+                <app>
+                    <h4 slot="header">slot头部</h4>
+                    <p>默认slot，内容</p>
+                    <p>默认slot，内容2</p>
+                    <h4 slot="footer">slot尾部</h4>
+                </app>
+                <app>
+                    <template scope="childprops">
+                        <p>{{childprops.title}}</p>
+                    </template>
+                </app>
+            </li>
+            <li>
+                <h2>动态组建</h2>
+                <i>多个组件可以使用同一个挂载点，然后动态地在它们之间切换；<br /></i>
+                <component ref="aa" :is="nowComponent">
+                    <p>默认slot，内容</p>
+                </component>
+                <button @click="toggleComponent">切换动态组建</button>
+            </li>
+            <li>
+                <h2>子组建索引</h2>
+                <i>有时仍然需要在JavaScript中直接访问子组件。为此可以使用ref为子组件指定一个索引ID。</i>
+                <p>var parent = new Vue({ el: '#parent' })
+                    <br />// 访问子组件
+                    <br />var child = parent.$refs.profile</p>
+            </li>
+            <li>
+                <h2>递归组建</h2>
+                <i>不谨慎, 递归组件可能导致死循环：“max stack size exceeded”；<br />
+                所以要确保递归调用有终止条件(比如递归调用时使用v-if并让他最终返回false)；<br />
+                定义递归组建，要定义全局组建，否则报错。</i>
+                <file-tree :folder="folder"></file-tree>
+            </li>
+        </ul>
+    </main>
+    <script src="./js/vue.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>

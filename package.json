@@ -1,22 +1,30 @@
 {
-    "name": "alipay-node",
-    "version": "0.0.1",
-    "private": false,
-    "scripts": {
-        "start": "node ./bin/www"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/hangyangws/alipay_node.git"
-    },
-    "dependencies": {
-        "body-parser": "~1.13.2",
-        "cookie-parser": "~1.3.5",
-        "debug": "~2.2.0",
-        "express": "~4.13.1",
-        "express-session": "^1.13.0",
-        "morgan": "~1.6.1",
-        "sync-request": "^3.0.1",
-        "velocityjs": "0.8.3"
-    }
+  "name": "demoshow",
+  "version": "1.0.0",
+  "description": "DemoShow for hangyangws",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hangyangws/DemoShow.git"
+  },
+  "keywords": [
+    "html",
+    "javascript",
+    "css",
+    "vue",
+    "demo"
+  ],
+  "author": "hangyangws",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hangyangws/DemoShow/issues"
+  },
+  "homepage": "https://github.com/hangyangws/DemoShow#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1"
+  }
 }

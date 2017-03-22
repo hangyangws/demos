@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue advanced - hangyangws</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+
+<body>
+    <main>
+        <ul>
+            <li>
+                <h2><a href="http://cn.vuejs.org/v2/guide/transitions.html">学习进度</a></h2>
+            </li>
+            <li id="response">
+                <h2>响应原理</h2>
+                <i>Vue能够响应data改变的原因，在于Object.defineProperty把data里面的属性全部转为getter、setter；<br />
+                所以IE8及以下浏览器不支持Vue，因为是不支持Object.defineProperty；<br />
+                Vue不能检测到对象的添加和删除，因为在初始化的时候会执行setter、getter，所以只有初始化对象才能支持响应系统。
+                </i>
+                <h4>Vue可以添加属性到已知对象的方法：</h4>
+                <ol>
+                    <li>Vue.set(vm.object, key, value) —— 全局</li>
+                    <li>this.$set(this.object, key, value) —— 局部（vm.$set 是 Vue.set的别名）</li>
+                </ol>
+                <dl>
+                    <dt>text:</dt>
+                    <dd>{{mybtn.text}}</dd>
+                </dl>
+                <dl>
+                    <dt>color:</dt>
+                    <dd>{{mybtn.color || 'undefined'}}</dd>
+                </dl>
+                <button @click="setColorError">设置color属性——错误</button>
+                <button @click="setColorSuccess">设置color属性——正确</button>
+            </li>
+            <li id="nextTick">
+                <h2>异步更新队列</h2>
+                <i>只要观察到数据变化，Vue 将开启一个队列；<br />
+                Vue 在内部尝试对异步队列使用原生的 Promise.then 和 MutationObserver，如果执行环境不支持，会采用 setTimeout(fn, 0) 代替。</i>
+                <p>有时我们需要在数据改变后，Dom渲染前执行方法，就可以用到：Vue.nextTick(callback)</p>
+                <div class="next-tick">{{nextTick}}</div>
+                <button @click="changeNextTick">changeNextTick</button>
+            </li>
+        </ul>
+    </main>
+    <script src="./js/vue.js"></script>
+    <script src="./js/advanced.js"></script>
+</body>
+
+</html>

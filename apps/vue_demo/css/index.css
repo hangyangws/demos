@@ -1,0 +1,49 @@
+body {
+    font-size: 14px;
+    color: #666;
+}
+
+h2 {
+    color: #333;
+}
+
+li {
+    margin-bottom: 1rem;
+}
+
+button {
+    margin-top: .5rem;
+    margin-right: .5rem;
+}
+
+.border {
+    display: inline-block;
+    margin-bottom: .4rem;
+    padding: .4rem .8rem;
+    border: 1px solid #fff;
+    border-radius: 6px;
+}
+
+.red {
+    color: #fff;
+    background-color: #900;
+}
+
+.green {
+    color: #fff;
+    background-color: #090;
+}
+
+.pink {
+    color: #fff;
+    background-color: pink;
+}
+
+.blank {
+    display: inline-b lock;
+    width: 2rem;
+}
+
+i {
+    font-size: .714rem;
+}
