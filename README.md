@@ -1,6 +1,6 @@
 # 航洋的DEMO和插件
 
-> 在[`app`](https://github.com/hangyangws/myDemo/tree/master/apps)目录下包含一些学习的代码例子
+[全部预览](https://github.com/hangyangws/myDemo/tree/master/apps)
 
 ### [nodejs数据库操作相关代码](https://github.com/hangyangws/myDemo/tree/master/apps/node_sql)
 
@@ -8,4 +8,4 @@
 
 ### [Vue.js的基本使用](https://github.com/hangyangws/myDemo/tree/master/apps/vue_demo)
 
-欢迎阅读，共同学习^_^
+感谢阅读 共同学习 ^_^

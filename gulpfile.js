@@ -1,7 +1,3 @@
-/**
- * Created by hangyangws(hangyangws@foxmail.com) in 2016-02-24.
- */
-
 var gulp = require('gulp'),
     browserSync = require('browser-sync').create(),
     frontendWatch = [
@@ -10,13 +6,14 @@ var gulp = require('gulp'),
         './apps/**/*.js'
     ];
 
-// 浏览器自动刷新（当静态文件和视图文件改变的时候）
 gulp.task('sync', function() {
     browserSync.init({
+        // 启动本地服务器
         server: {
             baseDir: './apps/'
         }
     });
+    // 浏览器自动刷新（当静态文件和视图文件改变的时候）
     gulp.watch(frontendWatch).on('change', browserSync.reload);
 });
 
