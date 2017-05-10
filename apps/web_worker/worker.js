@@ -1,6 +1,3 @@
 onmessage = function(e) {
-  console.log('Message received from main script');
-  var workerResult = 'Result: ' + (e.data[0] * e.data[1]);
-  console.log('Posting message back to main script');
-  postMessage(workerResult);
-}
+  var _data = e.data
+  postMessage(`${_data.join(' x ')} = ${_data[0] * _data[1]}`)
