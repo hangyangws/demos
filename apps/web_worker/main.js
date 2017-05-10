@@ -5,7 +5,7 @@
   $numberTwo = Class('number-two')
   $result = Class('result')
 
-  if (Worker in window) {
+  if (typeof window.Worker !== 'undefined') {
     // 实例化一个worker
     const myWorker = new Worker('./worker.js')
 
