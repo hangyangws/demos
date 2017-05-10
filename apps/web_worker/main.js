@@ -11,18 +11,22 @@
 
     // 监听worker的“message”事件
     myWorker.onmessage = function(e) {
-      $result.textContent = e.data;
-    };
+      $result.textContent = e.data
+    }
+
+    myWorker.onerror = function(e) {
+      throw new Error(`${e.message}：\'${e.filename} + ${e.lineno}\'`)
+    }
 
     $numberOne.onchange = function() {
-      myWorker.postMessage([$numberOne.value, $numberTwo.value]);
-    };
+      myWorker.postMessage([$numberOne.value, $numberTwo.value])
+    }
 
     $numberTwo.onchange = function() {
-      myWorker.postMessage([$numberOne.value, $numberTwo.value]);
-    };
+      myWorker.postMessage([$numberOne.value, $numberTwo.value])
+    }
 
   } else {
-    console.error('抱歉，你的浏览器OUT了');
+    console.error('抱歉，你的浏览器OUT了')
   }
 }
