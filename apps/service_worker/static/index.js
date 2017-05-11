@@ -1,7 +1,7 @@
 const
   appPath = '/myDemo/apps/service_worker/', // 应用相对于 origin 的目录，以'/'结尾
   imgLists = [{
-    url: 'static/img/img1.jpg',
+    url: 'static/img/img1.JPG',
     title: '广东-佛山 - 祖庙舞狮表演'
   }, {
     url: 'static/img/img2.jpg',
