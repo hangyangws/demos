@@ -1,8 +1,8 @@
 const CACHE_NAME = 'cache-1',
   urlsToCache = [
     '/',
-    '/ico.ico',
-    '/index.html',
+    'ico.ico',
+    'index.html',
     'static/main.js',
     'static/index.js',
     'static/index.css',
