@@ -11,7 +11,7 @@ const
     title: '四川-南充 - 阆中古镇'
   }, {
     url: 'static/img/img4.jpg',
-    title: '四川-职工 - 恐龙博物馆'
+    title: '四川-自贡 - 恐龙博物馆'
   }, {
     url: 'static/img/img5.jpg',
     title: '北京-颐和园 - 十七孔桥'
