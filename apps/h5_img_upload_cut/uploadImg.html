@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>html5 实现图片缩放上传</title>
+  <link rel="stylesheet" href="./style/base.css">
+  <link rel="stylesheet" href="./style/uploadImage.css">
+</head>
+
+<body>
+  <!-- 头像上传 -->
+  <div class="page-content" id="showResult">
+    <label class="j-logo logo" data-img="./image/photo.png">
+      <input class="j-logo-file logo-file" type="file" accept="image/*">
+    </label>
+  </div>
+  <div class="show-edit" id="showEdit">
+    <div class="btn-wraps">
+      <button class="j-cancel cancel">取消</button>
+      <button class="j-confirm confirm">确定</button>
+    </div>
+    <div id="report">
+      <img class="j-report-img report-img" src="#">
+    </div>
+  </div>
+  <link rel="stylesheet" href="./bower_components/cropper/dist/cropper.css">
+  <script src="./bower_components/jquery/dist/jquery.js"></script>
+  <script src="./bower_components/cropper/dist/cropper.js"></script>
+  <script src="./script/exif.js"></script>
+  <script src="./script/uploadImage.js"></script>
+</body>
+
+</html>
