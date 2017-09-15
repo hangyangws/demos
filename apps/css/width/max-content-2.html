@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>new witdh</title>
+  <style>
+    .max-content {
+      width: -webkit-max-content;
+      width: -moz-max-content;
+      width: max-content
+    }
+    .carousel {
+      background-color: pink;
+      margin: 0;
+      padding: 0;
+    }
+    .carousel > li {
+      display: inline-block;
+      width: 600px;
+      height: 200px;
+      background-color: #999;
+    }
+    .carousel > li:not(:last-child) {
+      margin-right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <ul class="carousel max-content">
+    <li>轮播1</li>
+    <li>轮播2</li>
+    <li>轮播3</li>
+    <li>轮播4</li>
+    <li>轮播5</li>
+    <li>轮播6</li>
+    <li>轮播7</li>
+    <li>轮播8</li>
+  </ul>
+</body>
+</html>
