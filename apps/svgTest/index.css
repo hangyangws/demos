@@ -1,0 +1,9 @@
+body {
+  margin: 0;
+}
+
+svg {
+  display: block;
+  background-color: #efefef;
+  margin-bottom: 1rem;
+}

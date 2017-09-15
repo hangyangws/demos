@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+}
+
+.style1 {
+  border-collapse: collapse;
+}
+
+.style1 th {
+  background-color: #DDDDDD;
+  white-space: nowrap;
+}
+
+.style1 .d {
+  white-space: nowrap;
+}
+
+.style1 .n {
+  padding-left: 20px;
+  text-align: right;
+}

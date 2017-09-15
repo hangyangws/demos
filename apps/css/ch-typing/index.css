@@ -1,0 +1,64 @@
+.section {
+  margin-bottom: 2rem;
+}
+
+.transition {
+  width: 100px;
+  height: 100px;
+  background-color: #f00;
+  transition: width 4s ease 2s, height 4s;
+}
+
+.transition:hover {
+  width: 400px;
+  height: 400px;
+  background-color: #0f0;
+}
+
+.animate {
+  width: 100px;
+  height: 100px;
+  background-color: #0f0;
+}
+
+.animate:hover {
+  /*animation-fill-mode forwards「动画停留在最后一帧」 backwards「动画停留在第一帧」*/
+  animation: round 1s step-end infinite both;
+  /*animation: round 2s ease infinite both;*/
+  /*animation-fill-mode: backwards;*/
+}
+
+@keyframes round {
+  0% {
+    border-radius: 0;
+  }
+  50% {
+    border-radius: 20%;
+  }
+  100% {
+    border-radius: 50%;
+  }
+}
+
+.typing {
+  font-size: 60px;
+  font-family: Monaco;
+  font-weight: 500;
+  border-right: 2px solid;
+  overflow: hidden;
+  width: 10ch;
+  white-space: nowrap;
+  animation: typing 2s steps(10, end), blink .2s step-end 10 alternate;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
