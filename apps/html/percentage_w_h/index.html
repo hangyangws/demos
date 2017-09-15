@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>percentage_w_h</title>
+  <style>
+    div {
+      background-color: #000;
+      color: #fff;
+      display: inline-block;
+      margin-right: 60px;
+      white-space: nowrap;
+    }
+    img {
+      width: 300px;
+      display: inline-block;
+    }
+    p {
+      background-color: #f00;
+      display: inline-block;
+    }
+    .w {
+      width: 100%;
+    }
+    .h {
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <img src="../test.png" />
+    <p class="w">我是宽度百分比的子元素</p>
+  </div>
+  <hr />
+  <div>
+    <img src="../test.png" />
+    <p class="h">我是高度百分比的子元素</p>
+  </div>
+</body>
+</html>
