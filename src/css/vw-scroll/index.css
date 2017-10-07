@@ -1,0 +1,17 @@
+.wrap {
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: calc(100% - 100vw);
+}
+
+.content {
+  list-style-type: none;
+  padding: 0;
+}
+
+.item {
+  background-color: rgba(100, 0, 0, .5);
+  padding: 20px;
+  margin-bottom: 2em;
+}
