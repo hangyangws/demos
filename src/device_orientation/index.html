@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Document</title>
+  <style>
+  body {
+    margin: 0;
+    color: #f00;
+  }
+  .garden {
+    border-bottom: 2px solid currentColor;
+    height: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ball {
+    width: 3em;
+    height: 3em;
+    border: 2px solid currentColor;
+    display: flex;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .output {
+    padding: 1em;
+    margin: 0;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="garden">
+    <div class="ball">冯</div>
+  </div>
+  <pre class="output"></pre>
+  <script>
+  ;(function(global) {
+    if (!/Mobile/i.test(navigator.userAgent)) {
+      alert('请用移动设备预览本页面')
+      return
+    }
+
+    const garden = document.querySelector('.garden')
+    const ball = document.querySelector('.ball')
+    const output = document.querySelector('.output')
+    const space = (garden.clientWidth - ball.clientWidth)/2
+    const setBallPosition = ({x = 0, y = 0, z = 0}) => {
+      ball.style = `transform: perspective(500px) rotate(${z}deg) translate3d(${-x}px, ${-y}px, ${z}px);-webkit-transform: perspective(500px) rotate(${z}deg) translate3d(${-x}px, ${-y}px, ${x}px);`
+    }
+    const handleOrientation = event => {
+      const {beta: x, gamma: y, alpha: z} = event
+
+      setBallPosition({
+        x: space * y / 90,
+        y: space * x / 180,
+        z
+      })
+
+      output.innerHTML = `x：${x}\ny：${y}\nz：${z}`
+    }
+
+    window.addEventListener('deviceorientation', handleOrientation)
+  })(window || this);
+
+  </script>
+</body>
+
+</html>

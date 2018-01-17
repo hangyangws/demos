@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>css</title>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .cube {
+      width: 160px;
+      height: 160px;
+      position: relative;
+      transform-style: preserve-3d;
+      -webkit-transform: rotateX(45deg) rotateY(45deg) rotateZ(45deg);
+      transform: rotateX(45deg) rotateY(45deg) rotateZ(45deg);
+    }
+    .cube-face {
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-shadow: inset 0 0 4px 1px #fff;
+      box-sizing: border-box;
+      background: -webkit-linear-gradient(45deg, rgba(156, 144, 144, .6), #000);
+      background: -o-linear-gradient(45deg, rgba(156, 144, 144, .6), #000);
+      background: linear-gradient(45deg, rgba(156, 144, 144, .6), #000)
+    }
+    .cube-front {
+      -webkit-transform: translateZ(80px);
+      transform: translateZ(80px);
+    }
+    .cube-back {
+      -webkit-transform: translateZ(-80px);
+      transform: translateZ(-80px);
+    }
+    .cube-left {
+      -webkit-transform: rotateY(90deg) translateZ(-80px);
+      transform: rotateY(90deg) translateZ(-80px);
+    }
+    .cube-right {
+      -webkit-transform: rotateY(90deg) translateZ(80px);
+      transform: rotateY(90deg) translateZ(80px);
+    }
+    .cube-top {
+      -webkit-transform: rotateX(90deg) translateZ(80px);
+      transform: rotateX(90deg) translateZ(80px);
+    }
+    .cube-bottom {
+      -webkit-transform: rotateX(90deg) translateZ(-80px);
+      transform: rotateX(90deg) translateZ(-80px);
+    }
+    .text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: red;
+      font-weight: bolder;
+      font-size: 4em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cube">
+    <span class="text">冯</span>
+    <i class="cube-face cube-front"></i>
+    <i class="cube-face cube-back"></i>
+    <i class="cube-face cube-left"></i>
+    <i class="cube-face cube-right"></i>
+    <i class="cube-face cube-top"></i>
+    <i class="cube-face cube-bottom"></i>
+  </div>
+  <script>
+    ;(function (global) {
+      if (!/Mobile/i.test(navigator.userAgent)) {
+        alert('请用移动设备预览本页面')
+        return
+      }
+
+      const cube = document.querySelector('.cube')
+
+      const setCubePosition = ({x = 0, y = 0, z = 0}) => {
+        cube.style = `transform: rotateX(${x}deg) rotateY(${y}deg) rotateZ(${x}deg);-webkit-transform: rotateX(${x}deg) rotateY(${y}deg) rotateZ(${x}deg);`
+      }
+      const handleOrientation = event => {
+        const {beta: x, gamma: y, alpha: z} = event
+
+        setCubePosition({
+          x: x * 2,
+          y: y * 4,
+          z: (z - 180) * 2
+        })
+      }
+
+      global.addEventListener('deviceorientation', handleOrientation)
+    })(window || this);
+  </script>
+</body>
+
+</html>
