@@ -20,6 +20,7 @@
       width: 160px;
       height: 160px;
       position: relative;
+      -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
       -webkit-transform: rotateX(45deg) rotateY(45deg) rotateZ(45deg);
       transform: rotateX(45deg) rotateY(45deg) rotateZ(45deg);
@@ -33,7 +34,7 @@
       box-sizing: border-box;
       background: -webkit-linear-gradient(45deg, rgba(156, 144, 144, .6), #000);
       background: -o-linear-gradient(45deg, rgba(156, 144, 144, .6), #000);
-      background: linear-gradient(45deg, rgba(156, 144, 144, .6), #000)
+      background: linear-gradient(45deg, rgba(156, 144, 144, .6), #000);
     }
     .cube-front {
       -webkit-transform: translateZ(80px);
@@ -74,38 +75,61 @@
 </head>
 
 <body>
-  <div class="cube">
-    <span class="text">冯</span>
-    <i class="cube-face cube-front"></i>
-    <i class="cube-face cube-back"></i>
-    <i class="cube-face cube-left"></i>
-    <i class="cube-face cube-right"></i>
-    <i class="cube-face cube-top"></i>
-    <i class="cube-face cube-bottom"></i>
+  <div id="cube" class="cube">
+    <em class="text">冯</em>
+    <span class="cube-face cube-front"></span>
+    <span class="cube-face cube-back"></span>
+    <span class="cube-face cube-left"></span>
+    <span class="cube-face cube-right"></span>
+    <span class="cube-face cube-top"></span>
+    <span class="cube-face cube-bottom"></span>
   </div>
   <script>
     ;(function (global) {
-      if (!/Mobile/i.test(navigator.userAgent)) {
+      'use strict'
+
+      // 宿主环境判断
+      var isMobile = !/Mobile/i.test(navigator.userAgent)
+      if (isMobile) {
         alert('请用移动设备预览本页面')
         return
       }
 
-      const cube = document.querySelector('.cube')
+      // 事件注册惰性函数
+      var eventRegister = (function() {
+        if (document.addEventListener) {
+          return function(e, t, h) {
+            e.addEventListener(t, h, false)
+          }
+        }
+        if (document.attachEvent) {
+          return function(e, t, h) {
+            e.attachEvent('on' + t, h)
+          }
+        }
+        return function(e, t, h) {
+          e['on' + t] = h
+        }
+      })()
+      // 立方体 DOM 节点
+      var $cube = document.getElementById('#cube')
 
-      const setCubePosition = ({x = 0, y = 0, z = 0}) => {
-        cube.style = `transform: rotateX(${x}deg) rotateY(${y}deg) rotateZ(${x}deg);-webkit-transform: rotateX(${x}deg) rotateY(${y}deg) rotateZ(${x}deg);`
+      function setCubePosition(obj) {
+        var x = obj.x
+        var y = obj.y
+        var z = obj.z
+
+        $cube.style = 'transform: rsotateX(' + x + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg);' +
+          '-webkit-transform: rotateX(' + z + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg);'
       }
-      const handleOrientation = event => {
-        const {beta: x, gamma: y, alpha: z} = event
-
+      function handleOrientation(event) {
         setCubePosition({
-          x: x * 2,
-          y: y * 4,
-          z: (z - 180) * 2
+          x: event.beta * 2,
+          y: event.gamma * 4,
+          z: (event.alpha - 180) * 2
         })
       }
-
-      global.addEventListener('deviceorientation', handleOrientation)
+      eventRegister(global, 'deviceorientation', handleOrientation)
     })(window || this);
   </script>
 </body>
