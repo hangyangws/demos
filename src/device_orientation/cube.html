@@ -119,8 +119,8 @@
         var y = obj.y
         var z = obj.z
 
-        $cube.style = 'transform: rsotateX(' + x + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg);' +
-          '-webkit-transform: rotateX(' + z + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg);'
+        $cube.style = 'transform: rotateX(' + x + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg);' +
+          '-webkit-transform: rotateX(' + x + 'deg) rotateY(' + y + 'deg) rotateZ(' + z + 'deg);'
       }
       function handleOrientation(event) {
         setCubePosition({
