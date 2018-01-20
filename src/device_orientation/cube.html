@@ -89,8 +89,8 @@
       'use strict'
 
       // 宿主环境判断
-      var isMobile = !/Mobile/i.test(navigator.userAgent)
-      if (isMobile) {
+      var isMobile = /Mobile/i.test(navigator.userAgent)
+      if (!isMobile) {
         alert('请用移动设备预览本页面')
         return
       }
