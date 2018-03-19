@@ -52,7 +52,6 @@ self.addEventListener('activate', (event) => {
 })
 
 // 监听作用域下的 fetch 事件
-
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request) // 优先读取缓存
